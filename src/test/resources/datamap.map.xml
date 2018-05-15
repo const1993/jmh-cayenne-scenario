@@ -4,25 +4,25 @@
 	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap http://cayenne.apache.org/schema/10/modelMap.xsd"
 	 project-version="10">
 	<property name="defaultPackage" value="org.sample.persistent"/>
-	<property name="defaultCatalog" value="aaa"/>
+	<property name="defaultCatalog" value="cayenne_demo"/>
 	<property name="clientSupported" value="true"/>
 	<property name="defaultClientPackage" value="test"/>
-	<db-entity name="ARTIST" catalog="aaa">
+	<db-entity name="ARTIST" catalog="cayenne_demo">
 		<db-attribute name="DATE_OF_BIRTH" type="DATE" length="10"/>
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
 		<db-attribute name="NAME" type="VARCHAR" length="200"/>
 	</db-entity>
-	<db-entity name="GALLERY" catalog="aaa">
+	<db-entity name="GALLERY" catalog="cayenne_demo">
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
 		<db-attribute name="NAME" type="VARCHAR" length="200"/>
 	</db-entity>
-	<db-entity name="PAINTING" catalog="aaa">
+	<db-entity name="PAINTING" catalog="cayenne_demo">
 		<db-attribute name="ARTIST_ID" type="INTEGER" length="10"/>
 		<db-attribute name="GALLERY_ID" type="INTEGER" length="10"/>
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
 		<db-attribute name="NAME" type="VARCHAR" length="200"/>
 	</db-entity>
-	<db-entity name="db_entity" catalog="aaa">
+	<db-entity name="db_entity" catalog="cayenne_demo">
 		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
 	</db-entity>
 	<obj-entity name="Artist" className="io.sample.persistent.Artist" clientClassName="test.Artist" dbEntityName="ARTIST">

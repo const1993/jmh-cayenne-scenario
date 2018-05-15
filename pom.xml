@@ -55,7 +55,6 @@ THE POSSIBILITY OF SUCH DAMAGE.
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-generator-annprocess</artifactId>
             <version>${jmh.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.cayenne</groupId>
@@ -72,7 +71,12 @@ THE POSSIBILITY OF SUCH DAMAGE.
             <artifactId>mysql-connector-java</artifactId>
             <version>6.0.5</version>
         </dependency>
-
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <properties>
@@ -145,60 +149,6 @@ THE POSSIBILITY OF SUCH DAMAGE.
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.20.1</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <images>
-                        <image>
-                            <alias>database</alias>
-                            <name>mysql:5.7</name>
-                            <run>
-                                <wait>
-                                    <log>mysqld: ready for connections</log>
-                                    <time>20000</time>
-                                </wait>
-                                <env>
-                                    <MYSQL_ROOT_PASSWORD>abc123</MYSQL_ROOT_PASSWORD>
-                                    <MYSQL_DATABASE>testdb</MYSQL_DATABASE>
-                                    <MYSQL_USER>mysql</MYSQL_USER>
-                                    <MYSQL_PASSWORD>mysql</MYSQL_PASSWORD>
-                                </env>
-                                <ports>
-                                    <port>3306:3306</port>
-                                </ports>
-                            </run>
-                        </image>
-                        <image>
-                            <name>mvndemo</name>
-                            <build>
-                                <from>java:8-jre</from>
-                                <assembly>
-                                    <descriptorRef>artifact</descriptorRef>
-                                </assembly>
-                            </build>
-                        </image>
-                    </images>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>docker:start</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>docker:stop</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
@@ -238,8 +188,190 @@ THE POSSIBILITY OF SUCH DAMAGE.
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.17</version>
                 </plugin>
+                <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>0.23.0</version>
+                </plugin>
             </plugins>
+
         </pluginManagement>
     </build>
 
+    <profiles>
+        <profile>
+            <id>integration-test</id>
+            <properties>
+                <skip.integration.tests>false</skip.integration.tests>
+                <skip.unit.tests>false</skip.unit.tests>
+            </properties>
+        </profile>
+        <profile>
+            <id>stub-driver</id>
+            <activation>
+                <property>
+                    <name>testConnection</name>
+                    <value>stub</value>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>io.bootique.jdbc.driver.stub</groupId>
+                    <artifactId>stub-jdbc-driver</artifactId>
+                    <version>1.0-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>2.21.0</version>
+                        <configuration>
+                            <includes>
+                                <include>io.sample.BenchmarkIdeRunner.java</include>
+                            </includes>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.apache.maven.surefire</groupId>
+                                <artifactId>surefire-junit4</artifactId>
+                                <version>2.21.0</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>mysql-docker</id>
+            <activation>
+                <property>
+                    <name>testConnection</name>
+                    <value>docker</value>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <version>5.1.42</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <include>
+                                    io.sample.BenchmarkIdeRunner.java
+                                </include>
+                            </includes>
+
+                            <systemPropertyVariables>
+                                <!-- See https://hub.docker.com/_/mysql/ for details-->
+                                <!-- ${db.host} and ${db.port} are dynamically set by docker-maven-plugin below -->
+                                <cayenneAdapter>org.apache.cayenne.dba.mysql.MySQLAdapter</cayenneAdapter>
+                                <cayenneJdbcUsername>root</cayenneJdbcUsername>
+                                <cayenneJdbcPassword></cayenneJdbcPassword>
+                                <cayenneJdbcUrl>jdbc:mysql://${db.host}:${db.port}/cayenne_demo?useSSL=false</cayenneJdbcUrl>
+                                <cayenneJdbcDriver>com.mysql.jdbc.Driver</cayenneJdbcDriver>
+                            </systemPropertyVariables>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>integration-tests</id>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                                <configuration>
+                                    <argLine>${failsafeArgLine}</argLine>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <alias>db</alias>
+                                    <name>mysql:latest</name>
+                                    <run>
+                                        <ports>
+                                            <port>${db.host}:${db.port}:3306</port>
+                                        </ports>
+                                        <wait>
+                                            <log>MySQL init process done. Ready for start up.</log>
+                                            <time>100000</time>
+                                        </wait>
+                                        <env>
+                                            <MYSQL_ALLOW_EMPTY_PASSWORD>yes</MYSQL_ALLOW_EMPTY_PASSWORD>
+                                            <MYSQL_DATABASE>cayenne_demo</MYSQL_DATABASE>
+                                        </env>
+                                        <cmd>
+                                            --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+                                        </cmd>
+                                    </run>
+                                </image>
+                            </images>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>docker:start</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>start</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>docker:stop</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <argLine>
+                                -DtestConnection=${testConnection} -Djava.net.preferIPv4Stack=true
+                                -Dcayenne.runtime.db.collation.assume.ci=${collationCi}
+                            </argLine>
+                            <systemPropertyVariables>
+                                <property>
+                                    <name>cayenneAdapter</name>
+                                    <value>${cayenneAdapter}</value>
+                                </property>
+                                <property>
+                                    <name>cayenneJdbcUsername</name>
+                                    <value>${cayenneJdbcUsername}</value>
+                                </property>
+                                <property>
+                                    <name>cayenneJdbcPassword</name>
+                                    <value>${cayenneJdbcPassword}</value>
+                                </property>
+                                <property>
+                                    <name>cayenneJdbcUrl</name>
+                                    <value>${cayenneJdbcUrl}</value>
+                                </property>
+                                <property>
+                                    <name>cayenneJdbcDriver</name>
+                                    <value>${cayenneJdbcDriver}</value>
+                                </property>
+                                <org.slf4j.simpleLogger.defaultLogLevel>${cayenneLogLevel}</org.slf4j.simpleLogger.defaultLogLevel>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
