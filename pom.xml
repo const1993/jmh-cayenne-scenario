@@ -62,6 +62,11 @@ THE POSSIBILITY OF SUCH DAMAGE.
             <version>${cayenne.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.cayenne.build-tools</groupId>
+            <artifactId>cayenne-test-utilities</artifactId>
+            <version>${cayenne.version}</version>
+        </dependency>
+        <dependency>
             <groupId>io.bootique.jdbc.driver.stub</groupId>
             <artifactId>stub-jdbc-driver</artifactId>
             <version>1.0-SNAPSHOT</version>
@@ -75,7 +80,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
-            <scope>test</scope>
+            <!--<scope>test</scope>-->
         </dependency>
     </dependencies>
 
@@ -104,6 +109,24 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
     <build>
         <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.21.0</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <org.slf4j.simpleLogger.defaultLogLevel>${cayenneLogLevel}</org.slf4j.simpleLogger.defaultLogLevel>
+                    </systemPropertyVariables>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-junit4</artifactId>
+                        <version>2.21.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -334,41 +357,10 @@ THE POSSIBILITY OF SUCH DAMAGE.
                                 <phase>post-integration-test</phase>
                                 <goals>
                                     <goal>stop</goal>
+                                    <goal>remove</goal>
                                 </goals>
                             </execution>
                         </executions>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <argLine>
-                                -DtestConnection=${testConnection} -Djava.net.preferIPv4Stack=true
-                                -Dcayenne.runtime.db.collation.assume.ci=${collationCi}
-                            </argLine>
-                            <systemPropertyVariables>
-                                <property>
-                                    <name>cayenneAdapter</name>
-                                    <value>${cayenneAdapter}</value>
-                                </property>
-                                <property>
-                                    <name>cayenneJdbcUsername</name>
-                                    <value>${cayenneJdbcUsername}</value>
-                                </property>
-                                <property>
-                                    <name>cayenneJdbcPassword</name>
-                                    <value>${cayenneJdbcPassword}</value>
-                                </property>
-                                <property>
-                                    <name>cayenneJdbcUrl</name>
-                                    <value>${cayenneJdbcUrl}</value>
-                                </property>
-                                <property>
-                                    <name>cayenneJdbcDriver</name>
-                                    <value>${cayenneJdbcDriver}</value>
-                                </property>
-                                <org.slf4j.simpleLogger.defaultLogLevel>${cayenneLogLevel}</org.slf4j.simpleLogger.defaultLogLevel>
-                            </systemPropertyVariables>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>

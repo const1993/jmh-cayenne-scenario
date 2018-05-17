@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <domain xmlns="http://cayenne.apache.org/schema/10/domain"
-	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/domain http://cayenne.apache.org/schema/10/domain.xsd"
-	 project-version="10">
-	<map name="datamap"/>
-	<node name="datanode"
-		 factory="org.apache.cayenne.configuration.server.XMLPoolingDataSourceFactory"
-		 schema-update-strategy="org.apache.cayenne.access.dbsync.CreateIfNoSchemaStrategy">
-		<map-ref name="datamap"/>
-		<data-source>
-			<driver value="io.bootique.jdbc.driver.stub.Driver"/>
-			<url value="jdbc:stub://localhost:9999/1111"/>
-			<connectionPool min="10" max="20"/>
-			<login userName="sss" password="sss"/>
-		</data-source>
-	</node>
-	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="project.graph.xml"/>
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://cayenne.apache.org/schema/10/domain http://cayenne.apache.org/schema/10/domain.xsd"
+        project-version="10">
+    <map name="datamap"/>
+    <node name="datanode"
+          factory="org.apache.cayenne.configuration.server.XMLPoolingDataSourceFactory"
+          schema-update-strategy="org.apache.cayenne.access.dbsync.CreateIfNoSchemaStrategy">
+        <map-ref name="datamap"/>
+        <data-source>
+            <driver value="com.mysql.cj.jdbc.Driver"/>
+            <url value="jdbc:mysql://192.168.99.100:3306/cayenne_demo?useSSL=false"/>
+            <connectionPool min="10" max="20"/>
+            <login userName="root" password="password"/>
+        </data-source>
+    </node>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="project.graph.xml"/>
 </domain>

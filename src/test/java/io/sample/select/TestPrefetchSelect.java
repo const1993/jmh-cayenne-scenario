@@ -1,11 +1,13 @@
 package io.sample.select;
 
 import io.sample.persistent.Artist;
-import io.sample.states.MysqlState;
-import io.sample.states.TestState;
+import io.sample.persistent.Gallery;
+import io.sample.persistent.Painting;
+import io.sample.states.SelectState;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.openjdk.jmh.annotations.*;
+
 
 import static java.util.concurrent.TimeUnit.MICROSECONDS;
 
@@ -16,38 +18,29 @@ public class TestPrefetchSelect {
 
 
     @Benchmark()
-    public void test_select_prefetch_one(TestState state) {
+    public void test_select_prefetch_one(SelectState state) {
         ObjectContext context = state.context;
-        ObjectSelect.query(Artist.class).prefetch(Artist.PAINTINGS.joint()).localCache().select(context);
-    }
-
-
-    @Benchmark()
-    public void test_select_where_one(TestState state) {
-        ObjectContext context = state.context;
-
-        ObjectSelect.query(Artist.class)
-                .where( Artist.NAME.eq("Picasso"))
-                .select(context);
+//        List<Gallery> select =
+                ObjectSelect.query(Gallery.class).prefetch(Gallery.PAINTINGS.joint()).select(context);
+//        System.out.println(TestPrefetchSelect.class.getName() + ".test_select_prefetch_one "+ Gallery.class.getName()+" " + select.size());
     }
 
     @Benchmark()
-    public void test_select_prefetch_batch10x(TestState state) {
+    public void test_select_prefetch_batch10x(SelectState state) {
         ObjectContext context = state.context;
-        for (int i = 0; i< 10; i++) {
-            ObjectSelect.query(Artist.class).prefetch(Artist.PAINTINGS.joint()).localCache().select(context);
-        }
+//        List<Artist> select =
+                ObjectSelect.query(Artist.class).prefetch(Artist.PAINTINGS.joint()).select(context);
+//        System.out.println(TestPrefetchSelect.class.getName() + ".test_select_prefetch_batch10x "+ Artist.class.getName()+" " + select.size());
+
     }
 
     @Benchmark()
-    public void test_select_where_batch10x(TestState state) {
+    public void test_select_prefetch_batch100x(SelectState state) {
         ObjectContext context = state.context;
-        for (int i = 0; i< 10; i++) {
+//        List<Painting> select =
+                ObjectSelect.query(Painting.class).prefetch(Painting.ARTIST.joint()).select(context);
+//        System.out.println(TestPrefetchSelect.class.getName() + ".test_select_prefetch_batch100x "+ Painting.class.getName()+" " + select.size());
 
-            ObjectSelect.query(Artist.class)
-                    .where(Artist.NAME.eq("Picasso"))
-                    .select(context);
-        }
     }
 
 

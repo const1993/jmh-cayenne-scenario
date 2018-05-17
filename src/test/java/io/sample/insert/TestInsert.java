@@ -1,6 +1,8 @@
 package io.sample.insert;
 
 import io.sample.persistent.Artist;
+import io.sample.persistent.Gallery;
+import io.sample.persistent.Painting;
 import io.sample.states.MysqlState;
 import io.sample.states.TestState;
 import org.apache.cayenne.ObjectContext;
@@ -29,8 +31,8 @@ public class TestInsert {
         ObjectContext context = state.context;
 
         for (int i = 0; i < 10; i++) {
-            Artist artist = context.newObject(Artist.class);
-            artist.setName("Picasso"+i);
+            Gallery gallery = context.newObject(Gallery.class);
+            gallery.setName("Armitage"+i);
         }
         context.commitChanges();
     }
@@ -40,8 +42,8 @@ public class TestInsert {
         ObjectContext context = state.context;
 
         for (int i = 0; i < 100; i++) {
-            Artist artist = context.newObject(Artist.class);
-            artist.setName("Picasso"+i);
+            Painting painting = context.newObject(Painting.class);
+            painting.setName("Black Squere"+i);
         }
         context.commitChanges();
     }

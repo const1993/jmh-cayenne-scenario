@@ -5,12 +5,16 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.configuration.server.ServerRuntimeBuilder;
 import org.apache.cayenne.datasource.DataSourceBuilder;
-import org.openjdk.jmh.annotations.*;
+import org.openjdk.jmh.annotations.Level;
+import org.openjdk.jmh.annotations.Param;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.State;
 
 @State(Scope.Thread)
 public class TestState {
 
-    @Param("jdbc:stub://localhost:9999/1111")
+    @Param("jdbc:stub://localhost:9999/cayenne_demo")
     String url;
 
     @Param("io.bootique.jdbc.driver.stub.Driver")
@@ -53,5 +57,7 @@ public class TestState {
                 .addConfig("cayenne-project.xml")
                 .build();
         context = cayenneRuntime.newContext();
+
+//        SQLExec.query("DROP SCHEMA cayenne_demo").execute(context);
     }
 }

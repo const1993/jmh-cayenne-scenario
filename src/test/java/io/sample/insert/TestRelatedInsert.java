@@ -10,9 +10,9 @@ import org.openjdk.jmh.annotations.*;
 
 import static java.util.concurrent.TimeUnit.MICROSECONDS;
 
-//@Measurement(batchSize = 10, time = 2, timeUnit = MICROSECONDS, iterations = 5)
-//@Warmup(batchSize = 10, time = 2, timeUnit = MICROSECONDS, iterations = 5)
-//@BenchmarkMode(Mode.AverageTime)
+@Measurement(batchSize = 10, time = 2, timeUnit = MICROSECONDS, iterations = 5)
+@Warmup(batchSize = 10, time = 2, timeUnit = MICROSECONDS, iterations = 5)
+@BenchmarkMode(Mode.AverageTime)
 public class TestRelatedInsert {
 
 
