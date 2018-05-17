@@ -3,12 +3,13 @@ package io.sample.insert;
 import io.sample.persistent.Artist;
 import io.sample.persistent.Gallery;
 import io.sample.persistent.Painting;
-import io.sample.states.MysqlState;
 import io.sample.states.TestState;
 import org.apache.cayenne.ObjectContext;
-import org.openjdk.jmh.annotations.*;
-
-import java.util.Properties;
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Measurement;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.Warmup;
 
 import static java.util.concurrent.TimeUnit.MICROSECONDS;
 

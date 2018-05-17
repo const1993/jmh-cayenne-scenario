@@ -57,7 +57,5 @@ public class TestState {
                 .addConfig("cayenne-project.xml")
                 .build();
         context = cayenneRuntime.newContext();
-
-//        SQLExec.query("DROP SCHEMA cayenne_demo").execute(context);
     }
 }

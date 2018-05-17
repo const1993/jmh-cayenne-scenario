@@ -6,7 +6,11 @@ import io.sample.persistent.Painting;
 import io.sample.states.SelectState;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
-import org.openjdk.jmh.annotations.*;
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Measurement;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.Warmup;
 
 
 import static java.util.concurrent.TimeUnit.MICROSECONDS;
@@ -16,32 +20,22 @@ import static java.util.concurrent.TimeUnit.MICROSECONDS;
 @BenchmarkMode(Mode.AverageTime)
 public class TestPrefetchSelect {
 
-
     @Benchmark()
     public void test_select_prefetch_one(SelectState state) {
         ObjectContext context = state.context;
-//        List<Gallery> select =
-                ObjectSelect.query(Gallery.class).prefetch(Gallery.PAINTINGS.joint()).select(context);
-//        System.out.println(TestPrefetchSelect.class.getName() + ".test_select_prefetch_one "+ Gallery.class.getName()+" " + select.size());
+        ObjectSelect.query(Gallery.class).prefetch(Gallery.PAINTINGS.joint()).select(context);
     }
 
     @Benchmark()
     public void test_select_prefetch_batch10x(SelectState state) {
         ObjectContext context = state.context;
-//        List<Artist> select =
-                ObjectSelect.query(Artist.class).prefetch(Artist.PAINTINGS.joint()).select(context);
-//        System.out.println(TestPrefetchSelect.class.getName() + ".test_select_prefetch_batch10x "+ Artist.class.getName()+" " + select.size());
-
+        ObjectSelect.query(Artist.class).prefetch(Artist.PAINTINGS.joint()).select(context);
     }
 
     @Benchmark()
     public void test_select_prefetch_batch100x(SelectState state) {
         ObjectContext context = state.context;
-//        List<Painting> select =
-                ObjectSelect.query(Painting.class).prefetch(Painting.ARTIST.joint()).select(context);
-//        System.out.println(TestPrefetchSelect.class.getName() + ".test_select_prefetch_batch100x "+ Painting.class.getName()+" " + select.size());
-
+        ObjectSelect.query(Painting.class).prefetch(Painting.ARTIST.joint()).select(context);
     }
-
 
 }

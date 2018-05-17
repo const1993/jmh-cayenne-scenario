@@ -8,7 +8,11 @@ import org.apache.cayenne.datasource.DataSourceBuilder;
 import org.apache.cayenne.datasource.PoolingDataSource;
 import org.apache.cayenne.test.jdbc.DBHelper;
 import org.apache.cayenne.test.jdbc.TableHelper;
-import org.openjdk.jmh.annotations.*;
+import org.openjdk.jmh.annotations.Level;
+import org.openjdk.jmh.annotations.Param;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.State;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
