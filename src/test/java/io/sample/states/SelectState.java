@@ -98,8 +98,8 @@ public class SelectState {
 
         for (int i = 1; i <= 10; i++) {
             artist.insert(i, "a" + i, new Date());
-            for (int j = 1; j <= 10; j++) {
-                int id = (i - 1) * 10 +j;
+            for (int j = 1; j <= 100; j++) {
+                int id = (i - 1) * 100 +j;
                 painting.insert(id, "b"+j, i, 1);
             }
         }
