@@ -64,7 +64,7 @@ public class TestRelatedInsert {
         Gallery gallery = context.newObject(Gallery.class);
         gallery.setName("faraday");
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
 
             Painting painting = context.newObject(Painting.class);
             painting.setName("asdasd");

@@ -1,11 +1,16 @@
 package io.sample.states;
 
 import io.sample.CayenneTutorialModule;
+import io.sample.persistent.Artist;
+import io.sample.persistent.Gallery;
+import io.sample.persistent.Painting;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.configuration.server.ServerRuntimeBuilder;
 import org.apache.cayenne.datasource.DataSourceBuilder;
 import org.apache.cayenne.datasource.PoolingDataSource;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.test.jdbc.DBHelper;
 import org.apache.cayenne.test.jdbc.TableHelper;
 import org.openjdk.jmh.annotations.Level;
@@ -67,6 +72,7 @@ public class SelectState {
         context = cayenneRuntime.newContext();
 
         try {
+            autogenerate(context);
             cleanupTables(dataSource);
             generateRows(dataSource);
         } catch (SQLException e) {
@@ -95,13 +101,21 @@ public class SelectState {
         TableHelper painting = new TableHelper(dbHelper, "PAINTING");
         painting.setColumns("ID", "NAME", "ARTIST_ID", "GALLERY_ID");
 
-
         for (int i = 1; i <= 10; i++) {
             artist.insert(i, "a" + i, new Date());
-            for (int j = 1; j <= 100; j++) {
-                int id = (i - 1) * 100 +j;
+            for (int j = 1; j <= 10; j++) {
+                int id = (i - 1) * 10 +j;
                 painting.insert(id, "b"+j, i, 1);
             }
         }
+
+        System.out.println("generated " + painting.getRowCount() +" paintings");
+    }
+
+    private void autogenerate(ObjectContext context) {
+        ObjectSelect.query(Artist.class).select(context);
+        ObjectSelect.query(Gallery.class).select(context);
+        ObjectSelect.query(Painting.class).select(context);
+
     }
 }

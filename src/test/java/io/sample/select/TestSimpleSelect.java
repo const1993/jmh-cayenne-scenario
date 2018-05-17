@@ -12,8 +12,6 @@ import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.Warmup;
 
-import java.util.List;
-
 import static java.util.concurrent.TimeUnit.MICROSECONDS;
 
 @Measurement(time = 2, timeUnit = MICROSECONDS, iterations = 5)
@@ -21,26 +19,25 @@ import static java.util.concurrent.TimeUnit.MICROSECONDS;
 @BenchmarkMode(Mode.AverageTime)
 public class TestSimpleSelect {
 
-//    @Benchmark()
-//    public void select_one(SelectState state) {
-//        ObjectContext context = state.context;
-//
-//        ObjectSelect.query(Gallery.class).select(context);
-//    }
-//
-//    @Benchmark()
-//    public void select_batch10x(SelectState state) {
-//        ObjectContext context = state.context;
-//
-//        ObjectSelect.query(Artist.class).select(context);
-//    }
+    @Benchmark()
+    public void select_one(SelectState state) {
+        ObjectContext context = state.context;
+
+        ObjectSelect.query(Gallery.class).select(context);
+    }
+
+    @Benchmark()
+    public void select_batch10x(SelectState state) {
+        ObjectContext context = state.context;
+
+        ObjectSelect.query(Artist.class).select(context);
+    }
 
     @Benchmark()
     public void select_batch100x(SelectState state) {
         ObjectContext context = state.context;
 
-        List<Painting> select = ObjectSelect.query(Painting.class).select(context);
-        System.out.println(select.size());
+        ObjectSelect.query(Painting.class).select(context);
 
     }
 }

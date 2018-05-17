@@ -42,7 +42,7 @@ public class TestInsert {
     public void test_insert_batch100x(TestState state) {
         ObjectContext context = state.context;
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
             Painting painting = context.newObject(Painting.class);
             painting.setName("Black Squere"+i);
         }

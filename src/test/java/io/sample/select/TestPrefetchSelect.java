@@ -22,23 +22,24 @@ import static java.util.concurrent.TimeUnit.MICROSECONDS;
 @BenchmarkMode(Mode.AverageTime)
 public class TestPrefetchSelect {
 
-//    @Benchmark()
-//    public void test_select_prefetch_one(SelectState state) {
-//        ObjectContext context = state.context;
-//        ObjectSelect.query(Gallery.class).prefetch(Gallery.PAINTINGS.joint()).select(context);
-//    }
-//
-//    @Benchmark()
-//    public void test_select_prefetch_batch10x(SelectState state) {
-//        ObjectContext context = state.context;
-//        ObjectSelect.query(Artist.class).prefetch(Artist.PAINTINGS.joint()).select(context);
-//    }
+    @Benchmark()
+    public void test_select_prefetch_one(SelectState state) {
+        ObjectContext context = state.context;
+        ObjectSelect.query(Gallery.class).prefetch(Gallery.PAINTINGS.joint()).select(context);
+    }
+
+    @Benchmark()
+    public void test_select_prefetch_batch10x(SelectState state) {
+        ObjectContext context = state.context;
+        ObjectSelect.query(Artist.class).prefetch(Artist.PAINTINGS.joint()).select(context);
+    }
 
     @Benchmark()
     public void test_select_prefetch_batch100x(SelectState state) {
+
         ObjectContext context = state.context;
-        List<Painting> select = ObjectSelect.query(Painting.class).prefetch(Painting.ARTIST.joint()).select(context);
-        System.out.println(select.size());
+        ObjectSelect.query(Painting.class).prefetch(Painting.ARTIST.joint()).select(context);
     }
+
 
 }
