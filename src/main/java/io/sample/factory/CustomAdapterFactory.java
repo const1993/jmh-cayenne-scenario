@@ -25,7 +25,7 @@ public class CustomAdapterFactory extends DefaultDbAdapterFactory {
     @Override
     public DbAdapter createAdapter(
             DataNodeDescriptor nodeDescriptor,
-            DataSource dataSource)  {
+            DataSource dataSource) throws Exception {
 
         AutoAdapter adapter =
                 (AutoAdapter) super.createAdapter(nodeDescriptor, dataSource);

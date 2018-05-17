@@ -64,7 +64,12 @@ THE POSSIBILITY OF SUCH DAMAGE.
         <dependency>
             <groupId>org.apache.cayenne.build-tools</groupId>
             <artifactId>cayenne-test-utilities</artifactId>
-            <version>${cayenne.version}</version>
+            <version>4.1.M2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cayenne</groupId>
+            <artifactId>cayenne-java8</artifactId>
+            <version>4.0.RC1</version>
         </dependency>
         <dependency>
             <groupId>io.bootique.jdbc.driver.stub</groupId>
@@ -103,7 +108,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
         <uberjar.name>benchmarks</uberjar.name>
         <!--<cayenne.version>4.1.M1</cayenne.version>-->
 
-        <cayenne.version>4.1.M2-SNAPSHOT</cayenne.version>
+        <cayenne.version>4.0.RC1</cayenne.version>
 
     </properties>
 

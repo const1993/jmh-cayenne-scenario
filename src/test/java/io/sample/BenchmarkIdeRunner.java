@@ -29,15 +29,15 @@ public class BenchmarkIdeRunner {
         new Runner(opt).run();
     }
 
-    @Test
-    public void runJmh() throws RunnerException {
-        Options opt = getOptions()
-                .include(TestInsert.class.getName() + ".*")
-                .include(TestRelatedInsert.class.getName() + ".*")
-                .build();
-
-        new Runner(opt).run();
-    }
+//    @Test
+//    public void runJmh() throws RunnerException {
+//        Options opt = getOptions()
+//                .include(TestInsert.class.getName() + ".*")
+//                .include(TestRelatedInsert.class.getName() + ".*")
+//                .build();
+//
+//        new Runner(opt).run();
+//    }
 
 
     private ChainedOptionsBuilder getOptions() {

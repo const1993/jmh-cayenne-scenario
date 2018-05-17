@@ -95,7 +95,6 @@ public class SelectState {
         TableHelper painting = new TableHelper(dbHelper, "PAINTING");
         painting.setColumns("ID", "NAME", "ARTIST_ID", "GALLERY_ID");
 
-
         for (int i = 1; i <= 10; i++) {
             artist.insert(i, "a" + i, new Date());
             for (int j = 1; j <= 10; j++) {

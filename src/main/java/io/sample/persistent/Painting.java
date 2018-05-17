@@ -10,9 +10,9 @@ public class Painting extends _Painting {
     @Override
     public String toString() {
         return "Painting{" +
-                "name=" + name +
-                " artist=" + artist.toString() +
-                " gallery=" + gallery.toString() +
+                "name=" + getName() +
+                " artist=" + getArtist().toString() +
+                " gallery=" + getGallery().toString() +
                 '}';
     }
 }

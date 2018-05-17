@@ -8,8 +8,8 @@ public class Gallery extends _Gallery {
 
     public String toString() {
         return "Gallery {" +
-                "name=" + name +
-                " paintings=" + paintings.toString() +
+                "name=" + getName() +
+                " paintings=" + getPaintings().toString() +
                 '}';
     }
 

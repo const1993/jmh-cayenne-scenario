@@ -15,8 +15,8 @@ public class Artist extends _Artist {
     @Override
     public String toString() {
         return "Artist{" +
-                "name=" + name +
-                " date_of_birh=" + dateOfBirth +
+                "name=" + getName() +
+                " date_of_birh=" + getDateOfBirth() +
                 '}';
     }
 }
