@@ -39,7 +39,7 @@ public class TestInsert {
     }
 
     @Benchmark()
-    public void test_insert_batch100x(TestState state) {
+    public void test_insert_batch1000x(TestState state) {
         ObjectContext context = state.context;
 
         for (int i = 0; i < 1000; i++) {

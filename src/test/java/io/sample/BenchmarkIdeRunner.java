@@ -24,6 +24,8 @@ public class BenchmarkIdeRunner {
                 .include(TestSimpleSelect.class.getName() + ".*")
                 .include(TestPrefetchSelect.class.getName() + ".*")
                 .include(TestWhereSelect.class.getName()+ ".*")
+                .warmupTime(TimeValue.seconds(2))
+                .measurementTime(TimeValue.seconds(2))
                 .build();
 
         new Runner(opt).run();
@@ -34,6 +36,8 @@ public class BenchmarkIdeRunner {
         Options opt = getOptions()
                 .include(TestInsert.class.getName() + ".*")
                 .include(TestRelatedInsert.class.getName() + ".*")
+                .warmupTime(TimeValue.seconds(2))
+                .measurementTime(TimeValue.seconds(2))
                 .build();
 
         new Runner(opt).run();
@@ -65,9 +69,7 @@ public class BenchmarkIdeRunner {
                 // Set the following options as needed
                 .mode (Mode.AverageTime)
                 .timeUnit(TimeUnit.MICROSECONDS)
-                .warmupTime(TimeValue.seconds(2))
                 .warmupIterations(5)
-                .measurementTime(TimeValue.seconds(2))
                 .measurementIterations(5)
                 .threads(1)
                 .forks(0)

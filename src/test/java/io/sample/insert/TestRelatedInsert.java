@@ -56,7 +56,7 @@ public class TestRelatedInsert {
     }
 
     @Benchmark()
-    public void test_insert_batch100x(TestState state) {
+    public void test_insert_batch1000x(TestState state) {
         ObjectContext context = state.context;
         Artist artist = context.newObject(Artist.class);
         artist.setName("Picasso");

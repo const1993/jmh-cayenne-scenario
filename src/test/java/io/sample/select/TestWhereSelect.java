@@ -39,7 +39,6 @@ public class TestWhereSelect {
                 .select(context);
     }
 
-
     @Benchmark()
     public void test_select_where_batch100x(SelectState state) {
         ObjectContext context = state.context;

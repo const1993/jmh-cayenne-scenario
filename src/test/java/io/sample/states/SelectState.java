@@ -70,9 +70,13 @@ public class SelectState {
                 .addConfig("cayenne-project.xml")
                 .build();
         context = cayenneRuntime.newContext();
+        try {
+            cleanupTables(dataSource);
+        } catch (SQLException e) {
+            autogenerate(context);
+        }
 
         try {
-            autogenerate(context);
             cleanupTables(dataSource);
             generateRows(dataSource);
         } catch (SQLException e) {
@@ -108,14 +112,11 @@ public class SelectState {
                 painting.insert(id, "b"+j, i, 1);
             }
         }
-
-        System.out.println("generated " + painting.getRowCount() +" paintings");
     }
 
     private void autogenerate(ObjectContext context) {
         ObjectSelect.query(Artist.class).select(context);
         ObjectSelect.query(Gallery.class).select(context);
         ObjectSelect.query(Painting.class).select(context);
-
     }
 }

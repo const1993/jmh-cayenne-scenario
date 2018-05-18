@@ -12,9 +12,6 @@ import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.Warmup;
 
-
-import java.util.List;
-
 import static java.util.concurrent.TimeUnit.MICROSECONDS;
 
 @Measurement(time = 2, timeUnit = MICROSECONDS, iterations = 5)
